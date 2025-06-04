@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 5050
+EXPOSE 5050 #port
 
 CMD ["npm", "start"]
 
