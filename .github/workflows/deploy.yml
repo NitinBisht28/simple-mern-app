@@ -40,11 +40,13 @@ jobs:
     - name: Deploy to Ubuntu server
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "
-          if [ ! -d /home/ubuntu/mern-app ]; then
-            git clone https://github.com/${{ github.repository }} /home/ubuntu/mern-app;
+          if [ ! -d /home/ubuntu/mern-app/.git ]; then
+            rm -rf /home/ubuntu/mern-app
+            git clone https://github.com/${{ github.repository }} /home/ubuntu/mern-app
           fi &&
           cd /home/ubuntu/mern-app &&
           git pull &&
           docker-compose pull &&
           docker-compose up -d --build
         "
+
