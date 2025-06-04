@@ -33,7 +33,7 @@ jobs:
         docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
 
     - name: Setup SSH agent
-      uses: webfactory/ssh-agent@v0.8.1
+      uses: webfactory/ssh-agent@v0.8
       with:
         ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
 
