@@ -3,7 +3,7 @@ name: Build and Deploy MERN app
 on:
   push:
     branches:
-      - main  # branch
+      - main
 
 jobs:
   build_and_deploy:
@@ -24,12 +24,12 @@ jobs:
 
     - name: Build and push frontend image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest ./frontend
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:latest ./mern/frontend
         docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
 
     - name: Build and push backend image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest ./backend
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/backend:latest ./mern/backend
         docker push ${{ secrets.DOCKER_USERNAME }}/backend:latest
 
     - name: Setup SSH agent
@@ -37,10 +37,14 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
 
-    - name: Deploy to server
+    - name: Deploy to Ubuntu server
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "
-          cd /path/to/your/app &&
+          if [ ! -d /home/ubuntu/mern-app ]; then
+            git clone https://github.com/${{ github.repository }} /home/ubuntu/mern-app;
+          fi &&
+          cd /home/ubuntu/mern-app &&
+          git pull &&
           docker-compose pull &&
           docker-compose up -d --build
         "
