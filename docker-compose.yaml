@@ -1,6 +1,6 @@
 services:
   backend:
-    build: drakeexe/backend:latest
+    image: drakeexe/backend:latest
     ports:
       - "5050:5050" 
     networks:
@@ -11,7 +11,7 @@ services:
       - mongodb
 
   frontend:
-    build: drakeexe/frontend:latest
+    image: drakeexe/frontend:latest
     ports:
       - "5173:5173"  
     networks:
